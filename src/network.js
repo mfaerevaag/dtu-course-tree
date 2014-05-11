@@ -14,7 +14,7 @@ var svg = d3.select(".graph").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-d3.json("data/miserables.json", function(error, graph) {
+d3.json("data/compute_full.json", function(error, graph) {
   force
       .nodes(graph.nodes)
       .links(graph.links)
