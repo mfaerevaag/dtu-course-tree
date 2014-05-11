@@ -1,7 +1,7 @@
 var width = 960,
     height = 600,
     distance = 100,
-    radius = 10;
+    radius = 15;
 
 var color = d3.scale.category20();
 
@@ -28,13 +28,18 @@ d3.json("data/miserables.json", function(error, graph) {
 
   var node = svg.selectAll(".node")
       .data(graph.nodes)
-    .enter().append("circle")
-      .attr("class", "node")
-      .attr("r", radius)
-      .style("fill", function(d) { return color(d.group); })
+    .enter().append("g")
       .call(force.drag);
 
-  node.append("title")
+  node.append("rect")
+        .attr("class", "node")
+        .attr("width", radius * 5)
+        .attr("height", radius)
+        .style("fill", function(d) { return color(d.group); });
+
+  node.append("text")
+      .attr("class", "label")
+      .attr("y", 10)
       .text(function(d) { return d.name; });
 
   force.on("tick", function() {
@@ -43,7 +48,6 @@ d3.json("data/miserables.json", function(error, graph) {
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
   });
 });

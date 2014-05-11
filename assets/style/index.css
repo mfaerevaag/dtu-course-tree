@@ -1,8 +1,9 @@
 body { padding-top: 70px; }
 
-.node {
-  stroke: #fff;
-  stroke-width: 1.5px;
+.node {}
+
+.label {
+  fill: #fff;
 }
 
 .link {
