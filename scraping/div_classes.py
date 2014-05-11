@@ -5,6 +5,7 @@ class Course:
     def __init__(self, number, link):
         self.number = number
         self.link = link
+        self.index = -1
         self.children = []
         self.parents = []
 

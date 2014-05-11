@@ -1,12 +1,13 @@
 from div_classes import *
 
 courses = parse_simon_links()
+courses = courses[0:45]
 print("no. of courses from Simonymous:")
 print(len(courses))
 
 total_count = 0
 
-things_range = range(0,12)
+things_range = range(0,len(courses)-1)
 
 # 1st For alle kurser, set prereqs (parents)
 for i in things_range:
@@ -27,9 +28,47 @@ for i in things_range:
 
 
 # 3rd spyt ud til JSON
-for i in things_range:
-    print("Current course: "+courses[i].number)
-    for parent in courses[i].parents:
-        print("\tParent: " + parent.number)
-    for child in courses[i].children:
-        print("\tChild: " + child.number)
+
+index = 0
+for course in courses:
+    course.index = str(index)
+    index += 1
+
+print("{")
+print("  \"nodes\":[")
+
+i = 0
+for course in courses:
+    if i != 0:
+        print(",")
+    print("    {\"name\":\""+course.number+"\",\"group\":1}"),
+    i += 1
+
+print(" ")
+print("  ],")
+print("  \"links\":[")
+
+first_found = 0
+for course in courses:
+    for parent in course.parents:
+        if first_found != 0:
+            print(",")
+        print("    {\"source\":"+course.index+", \"target\":"+parent.index+"\"value\":1}"),
+        first_found += 1
+
+print(" ")
+print("  ]")
+print("}")
+# {
+#   "nodes":[
+#     {"name":"Myriel","group":1},
+#     {"name":"Napoleon","group":1},
+#     {"name":"Mme.Hucheloup","group":8}
+#   ],
+#   "links":[
+#     {"source":1,"target":0,"value":1},
+#     {"source":2,"target":0,"value":8},
+#     {"source":76,"target":48,"value":1},
+#     {"source":76,"target":58,"value":1}
+#   ]
+# }
