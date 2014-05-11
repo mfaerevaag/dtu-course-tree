@@ -3,7 +3,7 @@ body { padding-top: 70px; }
 .node {}
 
 .label {
-  fill: #fff;
+  fill: #ff0;
 }
 
 .link {
