@@ -33,13 +33,15 @@ d3.json("data/compute_full.json", function(error, graph) {
 
   node.append("rect")
         .attr("class", "node")
-        .attr("width", radius * 5)
+        .attr("width", function(d) { return d.name.length * 7; })
         .attr("height", radius)
         .style("fill", function(d) { return color(d.group); });
 
   node.append("text")
       .attr("class", "label")
       .attr("y", 10)
+      .attr("x", function(d) { return d.name.length * 7 / 2; })
+      .style("text-anchor", "middle")
       .text(function(d) { return d.name; });
 
   force.on("tick", function() {
