@@ -1,0 +1,11 @@
+{
+    "name"         : "le-dtu-data",
+    "version"      : "0.0.1",
+    "description"  : "Get le DTU data",
+    "dependencies" : {
+        "lodash"     : "latest",
+        "request"    : "latest",
+        "cheerio"    : "latest",
+        "minimist"   : "latest"
+    }
+}
