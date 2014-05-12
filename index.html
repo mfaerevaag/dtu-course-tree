@@ -8,6 +8,48 @@
     <!-- style -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" media="all" href="assets/style/index.css">
+
+    <!-- scripts -->
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script>
+     var graphs = ['home', 'network', 'edge'];
+
+     function loadContent(graph) {
+         if (graphs.indexOf(graph) < 0) {
+             throw graph + " is not a graph."
+         }
+
+         $('.main').html('')
+         if (graph === 'home') {
+             $('.main').load('src/home.html');
+             return;
+         }
+
+         var file = 'src/' + graph + '.js';
+         $.getScript(file);
+     }
+
+     $(function() {
+         $('.navbar-nav li').click(function(e) {
+             $('li.active').removeClass('active');
+             var $this = $(this);
+             if (!$this.hasClass('active')) {
+                 $this.addClass('active');
+             }
+         });
+
+         graphs.forEach(function(graph) {
+             $('#btn-' + graph).bind('click', function() { loadContent(graph) });
+         });
+
+         var url = document.URL.substr(document.URL.indexOf('#') + 1);
+         if (/\#.+/i.test(url)) {
+             loadContent(url)
+         } else {
+             loadContent('home')
+         }
+     });
+    </script>
   </head>
   <body>
     <!-- navbar -->
@@ -16,17 +58,28 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="#">DTU Course Tree</a>
         </div>
+
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a id="btn-home" href="#home">Home</a></li>
+            <li><a id="btn-network" href="#network">Network</a></li>
+            <li><a id="btn-edge" href="#edge"">Edge</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <!-- main -->
     <div class="container">
-      <div class="jumbotron text-center graph">
-      </div>
+      <div class="jumbotron main"></div>
     </div>
 
     <!-- scripts -->
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="src/network.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <!-- <script src="src/network.js"></script>
+    <script>
+    $('head').append('<link rel="stylesheet" href="assets/style/network.css" type="text/css" />');
+    </script> -->
   </body>
 </html>
