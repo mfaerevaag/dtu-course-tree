@@ -1,7 +1,8 @@
 from div_classes import *
+import sys
 
 courses = parse_simon_links()
-courses = courses[0:45]
+#courses = courses[0:15]
 print("no. of courses from Simonymous:")
 print(len(courses))
 
@@ -25,9 +26,14 @@ print(total_count)
 for i in things_range:
     courses[i].add_to_prereqs()
 
+# 3rd remove isolated vertices
+print("Before trimming:")
+print(len(courses))
+print("After trimming:")
+courses = [course for course in courses if len(course.parents) > 0 or len(course.children) > 0]
+print(len(courses))
 
-
-# 3rd spyt ud til JSON
+# 4th spyt ud til JSON
 
 index = 0
 for course in courses:
@@ -53,7 +59,7 @@ for course in courses:
     for parent in course.parents:
         if first_found != 0:
             print(",")
-        print("    {\"source\":"+course.index+", \"target\":"+parent.index+"\"value\":1}"),
+        print("    {\"source\":"+course.index+", \"target\":"+parent.index+", \"value\":1}"),
         first_found += 1
 
 print(" ")
