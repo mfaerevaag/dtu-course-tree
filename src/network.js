@@ -3,7 +3,7 @@
 
 var width = 960,
 height = 600,
-distance = 100,
+distance = 300,
 radius = 10;
 
 var color = d3.scale.category20();
@@ -36,9 +36,11 @@ d3.json("data/compute_full.json", function(error, graph) {
 
   node.append("rect")
     .attr("class", "node")
-    .attr("width", function(d) { return d.name.length * 7; })
-    .attr("height", radius)
-    .style("fill", function(d) { return color(d.group); });
+    .attr("width", function(d) { return d.name.length * 7 * 2; })
+    .attr("height", radius * 2)
+    .style("fill", function(d) { return color(d.group); })
+    .style("stroke", "rgb(0,0,0)")
+    .style("stroke-width", function(d) { return d.weight; });
 
   node.append("text")
     .attr("class", "label")
