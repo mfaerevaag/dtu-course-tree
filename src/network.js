@@ -42,14 +42,18 @@ svg.append('svg:defs').append('svg:marker')
     .append('svg:path')
     .attr('d', 'M10,-5L0,0L10,5');
 
-
+var json_data;
 var data_graph;
 var plot_graph = {nodes:[],links:[]};
 
+// $.getJSON("data/compute_full_trimmed.json", function(data) {
+//     json_data = data;
+// }
+
 $.getJSON("data/compute_full_trimmed.json", function(data) {
 
-    data_graph = {links:[],nodes:[]};
 
+    data_graph = {links:[],nodes:[]};
 
 // Kloner alle nodes
     for(var i = 0; i < data.nodes.length; i++)
@@ -86,7 +90,39 @@ $.getJSON("data/compute_full_trimmed.json", function(data) {
         }
     }
 
-    var index = 33; //algo1, da denne har 2 forudsætninger og mange efterfølgere
+    PlotCourse("02105");
+});
+
+function FindCourse(course_name)
+{
+    for(var i = 0; i < data_graph.nodes.length; i++)
+    {
+        if(data_graph.nodes[i].name === course_name)
+        {
+            return i;
+        }
+    }
+
+    return -1; //
+}
+
+function SearchCourse()
+{
+    var course_name = $("#input-course-search").val();
+    if(FindCourse(course_name) === -1)
+    {
+        alert("Course not found :-(");
+        return;
+    }
+
+    PlotCourse(course_name);
+}
+
+function PlotCourse(course_name){
+    plot_graph = {links:[],nodes:[]}; // Reset plot_graph
+
+    var index = FindCourse(course_name);
+    //var index = 33; //algo1, da denne har 2 forudsætninger og mange efterfølgere
     plot_graph.nodes.push(data_graph.nodes[index]);
 
     for(var i = 0; i < plot_graph.nodes[0].children.length; i++)
@@ -103,36 +139,36 @@ $.getJSON("data/compute_full_trimmed.json", function(data) {
         plot_graph.links.push(link);
     }
 
+    ClearSvg();
     test_d3();
-});
+}
 
-// d3.json("data/compute_full_trimmed.json", function(error, graph) {
-//   force
-//     .nodes(graph.nodes)
-//     .links(graph.links)
-//     .start();
+function ClearSvg()
+{
+    d3.select("svg")
+        .remove();
+    svg = d3.select(".main").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+}
 
 var test_d3 = function() {
-// d3.json("data/compute_full_trimmed.json", function(error, graph) {
     force
         .nodes(plot_graph.nodes)
         .links(plot_graph.links)
         .start();
 
-  var node = svg.selectAll(".node")
-    .data(plot_graph.nodes)
-    .enter().append("g")
+    var node = svg.selectAll(".node")
+        .data(plot_graph.nodes)
+        .enter().append("g")
     // .filter(function(d) { return d.weight > 7;})
-    .call(force.drag);
+        .call(force.drag);
 
     var link = svg.selectAll(".link")
         .data(plot_graph.links)
         .enter().append("line")
         .attr("class", "link")
         .style('marker-start', 'url(#start-arrow)')
-        // .attr("marker-end","url(#triangle)")
-        // .attr("stroke","black")
-    //marker-end="url(#yourMarkerId)" stroke="black" stroke-width="10"
         .style("stroke-width", function(d) { return Math.sqrt(d.value); });
 
   node.append("rect")
@@ -155,7 +191,7 @@ var test_d3 = function() {
         .attr("y", 25)
         .attr("x", function(d) { return d.name.length * 7 / 2; })
         .style("text-anchor", "middle")
-        .text(function(d) { return "yttap!!!!"; });
+        .text(function(d) { return "course name"; });
 
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })
