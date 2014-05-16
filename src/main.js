@@ -12,7 +12,6 @@ function loadContent(graph) {
     }
 
     var file = 'src/' + graph + '.js';
-    alert(file)
     $.getScript(file);
 }
 
