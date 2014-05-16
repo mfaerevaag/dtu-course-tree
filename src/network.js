@@ -75,11 +75,22 @@ var UpdateGraph = function(course_index) {
         .start();
 
     var node_data = data_graph.nodes.filter(function(d) {
-        // return NodeDistance(d.index, course) <= depth;
-        return d.index == course_index
-            || _.any(d.parents, function(p) { return p == course_index; })
-            || _.any(d.children, function(p) { return p == course_index; });
+        //return NodeDistance(d.index, course_index) <= depth;
+        var matcher = function(p) { return p == course_index; };
 
+        if (_.any(d.parents, matcher)) {
+            d.group = 2;
+            return true;
+        }
+        if (_.any(d.children, matcher)) {
+            d.group = 1;
+            return true;
+        }
+        if (d.index == course_index) {
+            d.group = 0;
+            return true;
+        }
+        return false;
     });
 
     var link_data = data_graph.links.filter(function (l) {
