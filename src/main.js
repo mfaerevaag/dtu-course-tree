@@ -1,4 +1,4 @@
-var graphs = ['home', 'network', 'edge'];
+var graphs = ['home', 'network', 'edge','network1'];
 
 function loadContent(graph) {
     if (graphs.indexOf(graph) < 0) {
@@ -12,6 +12,7 @@ function loadContent(graph) {
     }
 
     var file = 'src/' + graph + '.js';
+    alert(file)
     $.getScript(file);
 }
 
