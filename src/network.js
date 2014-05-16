@@ -36,9 +36,15 @@ $.getJSON("data/compute_full_trimmed.json", function(data) {
     });
 
     UpdateGraph(33);
+
+    var course_ids = _.map(data_graph.nodes, function (n) {
+        return n.name;
+    });
+
+    $("#input-course-search").typeahead({source:course_ids});
 });
 
-function SearchCourse() 
+function SearchCourse()
 {
     var query = $("#input-course-search").val();
 
@@ -51,7 +57,6 @@ function SearchCourse()
         return;
     }
 
-    ClearSvg();
     UpdateGraph(course.index);
 }
 
@@ -64,16 +69,42 @@ function ClearSvg()
         .attr("height", height);
 }
 
-var UpdateGraph = function(course) {
+function NodeDistance(a, b) {
+    return 1337;
+}
+
+var UpdateGraph = function(course_index) {
+    ClearSvg();
+
     force.nodes(data_graph.nodes)
         .links(data_graph.links)
         .start();
 
     var node_data = data_graph.nodes.filter(function(d) {
-        return d.index == course
-            || _.any(d.parents, function(p) { return p == course; })
-            || _.any(d.children, function(p) { return p == course; });
-        
+        //return NodeDistance(d.index, course_index) <= depth;
+        var matcher = function(p) { return p == course_index; };
+
+        if (_.any(d.parents, matcher)) {
+            d.group = 2;
+            return true;
+        }
+        if (_.any(d.children, matcher)) {
+            d.group = 1;
+            return true;
+        }
+        if (d.index == course_index) {
+            d.group = 0;
+            return true;
+        }
+        return false;
+    });
+
+    var link_data = data_graph.links.filter(function (l) {
+        var ns = node_data;
+        // only show links to current
+        return l.source.index == course_index || l.target.index == course_index;
+        return ns.some(function  (n) { return l.source == n;})
+            && ns.some(function  (n) { return l.target == n;});
     });
 
     var node = svg.selectAll(".node")
@@ -103,12 +134,11 @@ var UpdateGraph = function(course) {
         .style("text-anchor", "middle")
         .text(function(d) { return "course name"; });
 
-    var link_data = data_graph.links.filter(function (l) {
-        var ns = node.data();
-        // only show links to current
-        return l.source.index == course || l.target.index == course;
-        return ns.some(function  (n) { return l.source == n;})
-            && ns.some(function  (n) { return l.target == n;});
+    node.on('click', function(d) {
+        // prevent clicking when dragging
+        if (d3.event.defaultPrevented) return;
+
+        UpdateGraph(d.index);
     });
 
     var link = svg.selectAll(".link")
