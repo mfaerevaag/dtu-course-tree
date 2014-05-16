@@ -33,7 +33,7 @@
         <div class="container">
             <div class="input-group">
                 <span class="input-group-addon">Please enter a course number:</span>
-                <input id="input-course-search" type="text" class="form-control" placeholder='E.g. "02561"'>
+                <input id="input-course-search" type="text" class="form-control" placeholder='E.g. "02561"' data-provide="typeahead">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button" onclick='SearchCourse();'>Go!</button>
                 </span>
@@ -61,6 +61,7 @@
         <script src="bower_components/d3/d3.js"></script>
         <script src="bower_components/lodash/dist/lodash.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js"></script>
         <script src="src/main.js"></script>
     </body>
 </html>

@@ -36,6 +36,12 @@ $.getJSON("data/compute_full_trimmed.json", function(data) {
     });
 
     UpdateGraph(33);
+
+    var course_ids = _.map(data_graph.nodes, function (n) {
+        return n.name;
+    });
+
+    $("#input-course-search").typeahead({source:course_ids});
 });
 
 function SearchCourse()
