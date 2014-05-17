@@ -2,16 +2,17 @@
 // http://bl.ocks.org/mbostock/4062045
 
 var width = 960,
-height = 600,
-distance = 100,
+height = 1000,
+distance = 140,
 radius = 10;
 
 var max_depth = 2;
+var bfs_queue = [];
 
 var color = d3.scale.category20();
 
 var force = d3.layout.force()
-  .charge(-120*5)
+  .charge(-120*15)
   .linkDistance(distance)
   .size([width, height]);
 
@@ -35,6 +36,7 @@ $.getJSON("data/compute_full_trimmed.json", function(data) {
         data_graph.nodes[i] = JSON.parse((JSON.stringify(node)));
         data_graph.nodes[i].children = [];
         data_graph.nodes[i].parents = [];
+        data_graph.nodes[i].visited = false;
     }
 
 // Kloner links
@@ -56,7 +58,7 @@ $.getJSON("data/compute_full_trimmed.json", function(data) {
         }
     }
 
-    PlotCourse("02105",1);
+    PlotCourse("02105");
 });
 
 function FindCourse(course_name, graph)
@@ -81,111 +83,89 @@ function SearchCourse()
         return;
     }
 
-    PlotCourse(course_name,1);
+    PlotCourse(course_name);
 }
 
-function AddChildrenToPlot(course_name, depth)
-{
-    if(depth > max_depth)
-    {return;}
 
-    var data_index = FindCourse(course_name, data_graph);
-console.log("child, current depth: "+depth);
-    for(var i = 0; i < data_graph.nodes[data_index].children.length; i++)
+function AddToPlot(course_name)
+{
+    for(var i = 0; i < data_graph.nodes.length; i++)
     {
-        var child_name = data_graph.nodes[data_index].children[i].name;
-        console.log(""+depth+", "+child_name);
-
-        var plot_index = FindCourse(child_name, plot_graph);
-        // console.log("plot_index: "+plot_index+", name: "+child_name);
-
-        var parent_plot_index = FindCourse(course_name, plot_graph);
-
-        if(plot_index === -1)
-        {
-            var last_index = plot_graph.nodes.push({name:child_name, group:depth*2+1}) - 1;
-            var link = {source:last_index,target:parent_plot_index,value:1};
-            var link_index = plot_graph.links.push(link);
-           // console.log("Adding new link. Source: "+last_index+", target: "+parent_plot_index+", link_index: "+link_index);
-
-        }else
-        {
-            var link = {source:plot_index,target:parent_plot_index,value:1};
-            var link_index = plot_graph.links.push(link);
-            // console.log("Adding new link. Source: "+last_index+", target: "+parent_plot_index+", link_index: "+link_index);
-        }
-
-        AddChildrenToPlot(child_name, depth + 1);
-        if(plot_index === -1)
-        {
-            AddParentsToPlot(child_name, depth + 1);
-        }
+        data_graph.nodes[i].visited = false;
     }
-}
 
-function AddParentsToPlot(course_name, depth)
-{
-    console.log("parent, current depth: "+depth);
-
-    if(depth > max_depth)
-    {return;}
-
-    var data_index = FindCourse(course_name, data_graph);
-
-    for(var i = 0; i < data_graph.nodes[data_index].parents.length; i++)
-    {
-        var parent_name = data_graph.nodes[data_index].parents[i].name;
-        // console.log(""+depth+", "+parent_name);
-
-        var plot_index = FindCourse(parent_name, plot_graph);
-        // console.log("plot_index: "+plot_index+", name: "+parent_name);
-
-        var parent_plot_index = FindCourse(course_name, plot_graph);
-
-        if(plot_index === -1)
-        {
-            var last_index = plot_graph.nodes.push({name:parent_name, group:depth*2+1}) - 1;
-            var link = {source:parent_plot_index,target:last_index,value:1};
-            //     var link = {source:0,target:last_index,value:1};
-            var link_index = plot_graph.links.push(link);
-           // console.log("Adding new link. Source: "+last_index+", target: "+parent_plot_index+", link_index: "+link_index);
-
-        }else
-        {
-            var link = {source:parent_plot_index,target:plot_index,value:1};
-            var link_index = plot_graph.links.push(link);
-            // console.log("Adding new link. Source: "+last_index+", target: "+parent_plot_index+", link_index: "+link_index);
-        }
-
-        AddParentsToPlot(parent_name, depth + 1);
-        if(plot_index === -1)
-        {
-            AddChildrenToPlot(parent_name, depth + 1);
-        }
-    }
-}
-
-
-
-function AddToPlot(course_name, depth)
-{
     var index = FindCourse(course_name, data_graph);
+//NEW
+    bfs_queue.push({name:course_name, group:0, depth:0});
 
-    //plot_graph.nodes.push(data_graph.nodes[index]);
-    plot_graph.nodes.push({name:course_name, group:depth*2+1}) - 1;
+    plot_graph.nodes.push({name:course_name, group:0, depth:0});
+    var data_index = FindCourse(course_name, data_graph);
+    data_graph.nodes[data_index].visited = true;
 
-    AddChildrenToPlot(course_name, depth);
-    // alert("nodes after children: "+plot_graph.nodes.length);
+    while(bfs_queue.length > 0)
+    {
+//1st unqueue
+        var node = bfs_queue.shift();
 
-    AddParentsToPlot(course_name, depth);
-    // alert("nodes after parents: "+plot_graph.nodes.length);
+        if(node.depth >= max_depth)
+        {continue;}
 
+        var data_index = FindCourse(node.name, data_graph);
+        var plot_index = FindCourse(node.name, plot_graph);
+
+//2ND add parent+child nodes and links
+//Adding parents
+        for(var i = 0; i < data_graph.nodes[data_index].parents.length; i++)
+        {
+            var parent_name = data_graph.nodes[data_index].parents[i].name;
+            var parent_data_index = FindCourse(parent_name, data_graph);
+
+
+            if(!data_graph.nodes[parent_data_index].visited)
+            {
+                data_graph.nodes[parent_data_index].visited = true;
+                var parent = {name: parent_name, group:node.depth*2 + 1, depth:node.depth+1};
+                var last_index = -1 + plot_graph.nodes.push(parent);
+                var link = {source:plot_index, target:last_index, value:1};
+                var link_index = -1 + plot_graph.links.push(link);
+                bfs_queue.push(parent);
+            }else
+            {
+                var parent_plot_index = FindCourse(parent_name, plot_graph);
+                var link = {source:plot_index, target:parent_plot_index, value:1};
+                var link_index = -1 + plot_graph.links.push(link);
+            }
+        }
+
+//3rd add children
+        for(var i = 0; i < data_graph.nodes[data_index].children.length; i++)
+        {
+            var child_name = data_graph.nodes[data_index].children[i].name;
+            var child_data_index = FindCourse(child_name, data_graph);
+
+            if(!data_graph.nodes[child_data_index].visited)
+            {
+                data_graph.nodes[child_data_index].visited = true;
+                var child = {name: child_name, group:node.depth*2 +1, depth:node.depth+1};
+                var last_index = -1 + plot_graph.nodes.push(child);
+                var link = {source:last_index, target:plot_index, value:1};
+                var link_index = -1 + plot_graph.links.push(link);
+                bfs_queue.push(child);
+            }
+            else
+            {
+                var child_plot_index = FindCourse(child_name, plot_graph);
+                var link = {source:child_plot_index, target:plot_index, value:1};
+                var link_index = -1 + plot_graph.links.push(link);
+            }
+        }
+    }
 }
 
-function PlotCourse(course_name, depth){
+function PlotCourse(course_name){
     plot_graph = {links:[],nodes:[]}; // Reset plot_graph
 
-    AddToPlot(course_name, depth);
+    AddToPlot(course_name);
 
     ClearSvg();
     test_d3();
@@ -210,7 +190,6 @@ var test_d3 = function() {
     var node = svg.selectAll(".node")
         .data(plot_graph.nodes)
         .enter().append("g")
-    // .filter(function(d) { return d.weight > 7;})
         .call(force.drag);
 
     var link = svg.selectAll(".link")
@@ -218,7 +197,7 @@ var test_d3 = function() {
         .enter().append("line")
         .attr("class", "link")
         .style('marker-start', 'url(#start-arrow)')
-        .style("stroke-width", function(d) { return Math.sqrt(d.value)*5; });
+        .style("stroke-width", function(d) { return Math.sqrt(d.value)*4; });
 
   node.append("rect")
     .attr("class", "node")
@@ -228,12 +207,12 @@ var test_d3 = function() {
     .style("stroke", "rgb(0,0,0)")
     .style("stroke-width", function(d) { return Math.sqrt(d.weight) * 4; });
 
-  node.append("text")
-    .attr("class", "label")
-    .attr("y", 10)
-    .attr("x", function(d) { return d.name.length * 7 / 2; })
-    .style("text-anchor", "middle")
-    .text(function(d) { return d.name; });
+    node.append("text")
+        .attr("class", "label")
+        .attr("y", 10)
+        .attr("x", function(d) { return d.name.length * 7 / 2; })
+        .style("text-anchor", "middle")
+        .text(function(d) { return d.name; });
 
     node.append("text")
         .attr("class", "label")
@@ -242,11 +221,54 @@ var test_d3 = function() {
         .style("text-anchor", "middle")
         .text(function(d) { return "course name"; });
 
-  force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
+    node.on('click', function(d) {
+        // prevent clicking when dragging
+        if (d3.event.defaultPrevented) return;
+
+        PlotCourse(d.name);
+    });
+
+    force.on("tick", function() {
+        link.attr("x1", function(d) {
+            var width = 70;
+
+            return d.source.x + width/2;
+
+            // if(d.target.x < d.source.x + width/2)
+            //     return d.source.x;
+            // else
+            //     return d.source.x + width;
+        })
+            .attr("y1", function(d) { //return d.source.y;
+                var height = 24;
+
+                return d.source.y + height/2;
+
+                // if(d.target.y < d.source.y + height/2)
+                //     return d.source.y;
+                // else
+                //     return d.source.y + height;
+ })
+            .attr("x2", function(d) {
+                var width = 70;
+                return d.target.x + width/2;
+
+                // if(d.source.x < d.target.x + width/2)
+                //     return d.target.x;
+                // else
+                //     return d.target.x + width;
+
+})
+      .attr("y2", function(d) { //return d.target.y;
+
+          var height = 24;
+          return d.target.y + height/2;
+
+          // if(d.source.y < d.target.y + height/2)
+          //     return d.target.y;
+          // else
+          //     return d.target.y + height;
+ });
 
     node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
   });
