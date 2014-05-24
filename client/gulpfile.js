@@ -41,7 +41,7 @@ gulp.task('default', ['build', 'connect', 'watch']);
 
 gulp.task('styles', function () {
     var styles = [
-        'assets/**/*.css',
+        app_root + '/styles/**/*.css',
         'vendor/bootstrap/dist/css/bootstrap.css',
     ];
 
