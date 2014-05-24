@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dct">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DTU Course Tree</title>
+
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavCtrl">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">DTU Course Tree</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
+                <li ng-class="{ active: isActive('/network')}"><a href="#/network">Network</a></li>
+            </ul>
+        </nav>
+
+        <div ng-view></div>
+
+        <script src="bundle.js"></script>
+    </body>
+</html>

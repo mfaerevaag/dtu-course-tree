@@ -1,3 +1,6 @@
+var $ = require('jquery'),
+    angular = require('angularjs');
+
 var graphs = ['home', 'network', 'edge','network1'];
 
 function loadContent(graph) {

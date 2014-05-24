@@ -1,5 +1,6 @@
-// based off mbostock’s block #4062045 November 12, 2012
-// http://bl.ocks.org/mbostock/4062045
+var $ = require('jquery'),
+    _ = requiore('lodash'),
+    d3 = require('d3');
 
 var width = 960,
     height = 600,

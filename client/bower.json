@@ -9,9 +9,10 @@
   ],
   "dependencies": {
     "bootstrap": "~3.1.1",
-    "jquery": "~2.1.1",
-    "lodash": "~2.4.1",
     "bootstrap3-typeahead": "~3.0.3",
-    "d3": "~3.4.8"
+    "angular": "~1.2.16",
+    "d3": "~3.4.8",
+    "lodash": "~2.4.1",
+    "angular-ui": "~0.4.0"
   }
 }
