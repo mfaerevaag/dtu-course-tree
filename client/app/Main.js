@@ -1,6 +1,6 @@
 require('bootstrap');
-require('bootstrapTypeahead');
 require('angular-strap');
+require('angular-strap-tpl');
 
 require('controller/NavCtrl');
 require('Router');

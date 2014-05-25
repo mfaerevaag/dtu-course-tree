@@ -7,12 +7,6 @@ var networkCtrl = require('./controller/NetworkCtrl'),
     
 app.config(function ($routeProvider, $httpProvider) {
     $routeProvider
-        .when('/', {
-            templateUrl: 'app/view/home.html',
-            controller: homeCtrl.name
-        })
-        .when('/network', {
-            templateUrl: 'app/view/network.html',
-            controller: networkCtrl.name
-        });
+        .when('/', homeCtrl.config)
+        .when('/network', networkCtrl.config);
 });

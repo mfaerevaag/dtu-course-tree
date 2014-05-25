@@ -4,7 +4,10 @@ var app = require('App').module,
     name = 'HomeCtrl';
 
 app.controller(name, function($scope) {
-    $scope.pageTitle = 'Velko';
+    $scope.pageTitle = 'Lolhej';
 });
 
-exports.name = name;
+exports.config = {
+    templateUrl: 'app/view/home.html',
+    controller: name
+};;

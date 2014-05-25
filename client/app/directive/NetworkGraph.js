@@ -92,16 +92,15 @@ app.directive('networkGraph', function () {
                     return -1;
                 }
 
-                function SearchCourse()
+                function SearchCourse(name)
                 {
-                    var course_name = $("#input-course-search").val();
-                    if(FindCourse(course_name, data_graph) === -1)
+                    if(FindCourse(name, data_graph) === -1)
                     {
                         alert("Course not found :-(");
                         return;
                     }
 
-                    PlotCourse(course_name);
+                    PlotCourse(name);
                 }
 
 
@@ -288,7 +287,7 @@ app.directive('networkGraph', function () {
                     });
                 };
 
-                PlotCourse(course);
+                SearchCourse(course);
             };
         }
     };

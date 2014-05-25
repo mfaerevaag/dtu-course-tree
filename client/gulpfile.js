@@ -66,6 +66,12 @@ gulp.task('js', function () {
                     depends: { angular: 'angular' }
                 },
 
+                'angular-strap-tpl': {
+                    path: 'vendor/angular-strap/dist/angular-strap.tpl.js',
+                    exports: 'ngStrapTpl',
+                    depends: { angular: 'angular' }
+                },
+
                 'angular-strap': {
                     path: 'vendor/angular-strap/dist/angular-strap.js',
                     exports: 'ngStrap',
@@ -85,18 +91,12 @@ gulp.task('js', function () {
                 
                 lodash: {
                     path: 'vendor/lodash/dist/lodash.js',
-                    exports: 'lodash'
+                    exports: '_'
                 },
 
                 bootstrap: {
                     path: 'vendor/bootstrap/dist/js/bootstrap.js',
                     exports: 'bootstrap',
-                    depends: { jquery: 'jquery' }
-                },
-
-                bootstrapTypeahead: {
-                    path: 'vendor/bootstrap3-typeahead/bootstrap3-typeahead.js',
-                    exports: 'bootstrapTypeahead',
                     depends: { jquery: 'jquery' }
                 }
             }

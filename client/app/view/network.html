@@ -1,11 +1,11 @@
 <div>
     <div class="input-group">
         <span class="input-group-addon">Search course</span>
-        <input type="text" ng-model="courseInput" class="form-control" placeholder="E.g. '02561'" data-provide="typeahead">
+        <input type="text" ng-model="courseInput" ng-options="c for c in courseNames" class="form-control" placeholder="E.g. '02561'" bs-typeahead>
+
         <span class="input-group-btn">
             <button class="btn btn-default" type="button" ng-click="selectCourse()">Go!</button>
         </span>
     </div>
-
     <network-graph data="graphData" course="course"/>
 </div>
