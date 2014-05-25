@@ -66,6 +66,12 @@ gulp.task('js', function () {
                     depends: { angular: 'angular' }
                 },
 
+                'angular-strap': {
+                    path: 'vendor/angular-strap/dist/angular-strap.js',
+                    exports: 'ngStrap',
+                    depends: { angular: 'angular' }
+                },
+
                 jquery: {
                     path: 'vendor/jquery/dist/jquery.js',
                     exports: 'jQuery'
