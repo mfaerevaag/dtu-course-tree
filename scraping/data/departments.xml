@@ -1,0 +1,23 @@
+<root xmlns="">
+    <item value="27" dk="27 Institut for Systembiologi" en-gb="27 Department of Systems Biology" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="11" dk="11 Institut for Byggeri og Anlæg" en-gb="11 Department of Civil Engineering" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="13" dk="13 Institut for Transport" en-gb="13 Department of Transport" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="34" dk="34 Institut for Fotonik" en-gb="34 Department of Photonics Engineering" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="10" dk="10 Institut for Fysik" en-gb="10 Department of Physics" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="28" dk="28 Institut for Kemiteknik" en-gb="28 Department of Chemical Engineering" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="1" dk="01 Institut for Matematik og Computer Science" en-gb="01 Department of Applied Mathematics and Computer Science" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="41" dk="41 Institut for Mekanisk Teknologi" en-gb="41 Department of Mechanical Engineering" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="42" dk="42 DTU Management Engineering" en-gb="42 DTU Management Engineering" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="26" dk="26 Institut for Kemi" en-gb="26 Department of Chemistry" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="33" dk="33 Institut for Mikro- og Nanoteknologi" en-gb="33 Department of Micro and Nanotechnology" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="12" dk="12 Institut for Vand og Miljøteknologi" en-gb="12 Department of Environmental Engineering" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="31" dk="31 Institut for Elektroteknologi" en-gb="31 Department of Electrical Engineering" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="83" dk="88 Andre kurser" en-gb="88 Other courses" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="23" dk="23 Fødevareinstituttet" en-gb="23 National Food Institute" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="24" dk="24 Veterinærinstituttet" en-gb="24 National Veterinary Institute" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="25" dk="25 Institut for Akvatiske Ressourcer" en-gb="25 National Institute of Aquatic Resources" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="30" dk="30 Institut for Rumforskning og -teknologi" en-gb="30 National Space Institute" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="46" dk="46 DTU Vindenergi" en-gb="46 DTU Wind Energy" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="47" dk="47 DTU Energikonvertering" en-gb="47 DTU Energy Conversion" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+    <item value="IHK" dk="62 DTU Diplom" en-gb="62 DTU Diplom" XpathKey="Course/Departments/Main_Dep[@UID='#KEY#']" />
+</root>
